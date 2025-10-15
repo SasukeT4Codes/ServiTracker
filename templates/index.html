@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Inicio</title>
-</head>
-<body>
-    <h1>Bienvenido, {{ name }}</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Inicio · ServiTracker{% endblock %}
+{% block content %}
+  <h2 class="mb-3">Bienvenido</h2>
+  <p>Esta es la página de inicio del prototipo PQR.</p>
+  <a href="{% url 'servicios' %}" class="btn btn-primary">Ver servicios</a>
+{% endblock %}

@@ -1,16 +1,14 @@
 from django.shortcuts import render
 
 def index(request):
-    context = {'name': 'Estudiante UDI'}
-    return render(request, 'index.html', context)
+  return render(request, 'index.html')
 
-def saludo(request):
-    nombre = request.GET.get('nombre')
-    edad = request.GET.get('edad')
+def servicios(request):
+  return render(request, 'servicios.html')
 
-    context = {
-        'nombre': nombre,
-        'edad': edad,
-        'has_data': bool(nombre and edad)
-    }
-    return render(request, 'saludo.html', context)
+def nosotros(request):
+  return render(request, 'nosotros.html')
+
+def contacto(request):
+  return render(request, 'contacto.html')
+

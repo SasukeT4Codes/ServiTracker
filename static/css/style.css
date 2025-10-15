@@ -1,0 +1,66 @@
+:root {
+  --blue-light: #8ecae6;
+  --blue-mid: #219ebc;
+  --blue-deep: #126782;
+  --blue-dark: #023047;
+  --yellow: #ffb703;
+  --orange-light: #fd9e02;
+  --orange-dark: #fb8500;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--blue-light);
+  color: var(--blue-dark);
+}
+
+.navbar {
+  background-color: var(--blue-dark) !important;
+}
+
+.navbar-brand, .nav-link {
+  color: white !important;
+}
+
+.nav-link:hover {
+  color: var(--yellow) !important;
+}
+
+aside {
+  min-height: 100vh;
+  background-color: var(--blue-deep);
+}
+
+aside h5 {
+  color: var(--yellow);
+}
+
+footer {
+  background-color: var(--blue-dark);
+}
+
+h1, h2, h3 {
+  color: var(--blue-dark);
+}
+
+.btn-primary {
+  background-color: var(--yellow);
+  border-color: var(--orange-dark);
+  color: var(--blue-dark);
+}
+
+.btn-primary:hover {
+  background-color: var(--orange-dark);
+  border-color: var(--orange-light);
+  color: white;
+}
+
+.table.services {
+  background: #fff;
+  border: 2px solid var(--yellow);
+}
+
+.table.services thead {
+  background: var(--yellow);
+  color: var(--blue-dark);
+}
