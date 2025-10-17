@@ -12,6 +12,13 @@ body {
   font-family: 'Segoe UI', Roboto, sans-serif;
   background-color: var(--blue-light);
   color: var(--blue-dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
 }
 
 .navbar {
@@ -37,6 +44,7 @@ aside h5 {
 
 footer {
   background-color: var(--blue-dark);
+  color: white;
 }
 
 h1, h2, h3 {
@@ -55,12 +63,37 @@ h1, h2, h3 {
   color: white;
 }
 
-.table.services {
-  background: #fff;
-  border: 2px solid var(--yellow);
+.table {
+  border: 1px solid var(--blue-dark);
 }
 
-.table.services thead {
-  background: var(--yellow);
+.table thead {
+  font-weight: bold;
+}
+
+
+.service-img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;   /* se ajusta sin recortar */
+  background-color: white; /* relleno para que se vea uniforme */
+  border: 2px solid var(--yellow);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+
+
+
+.btn-yellow {
+  background-color: var(--yellow);
+  border-color: var(--orange-dark);
   color: var(--blue-dark);
+  transition: all 0.2s ease;
+}
+
+.btn-yellow:hover {
+  background-color: var(--orange-dark);
+  border-color: var(--orange-dark);
+  color: white;
 }

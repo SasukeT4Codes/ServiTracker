@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard Administrativo{% endblock %}
+{% block content %}
+<h2 class="mb-3">Gestión de PQR</h2>
+
+<table class="table table-bordered">
+  <thead class="table-dark text-white">
+    <tr>
+      <th>ID</th>
+      <th>Ciudadano</th>
+      <th>Técnico</th>
+      <th>Tipo de Falla</th>
+      <th>Estado</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for q in quejas %}
+    <tr>
+      <td>{{ q.id }}</td>
+      <td>{{ q.ciudadano.usuario.username }}</td>
+      <td>{% if q.tecnico %}{{ q.tecnico.usuario.username }}{% else %}-{% endif %}</td>
+      <td>{{ q.tipo_falla.nombre }}</td>
+      <td>{{ q.estado.nombre }}</td>
+      <td>{{ q.fecha_reporte|date:"d/m/Y H:i" }}</td>
+      <td>
+        <a href="{% url 'cambiar_estado' q.id %}" class="btn btn-sm btn-warning">Cambiar estado</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No hay PQR registradas.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-c14&!7*t)t@j6%8-%&2&$jssn+0qq59d*x8ow80d1w37e!!b^u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True #cambiado de momento
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost'] #dominio real si se usa produccion
 
 
 # Application definition
@@ -127,3 +127,8 @@ STATICFILES_DIRS = [BASE_DIR / 'static'] #Le dice a django donde estan las img
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+# Redireccionar login exitoso
+
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = 'index'
