@@ -63,7 +63,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # Aquí podrías agregar context processors propios si los necesitas
             ],
         },
     },
@@ -89,7 +88,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Usuario personalizado
-
 AUTH_USER_MODEL = 'usuarios.Usuario'
 
 # Internacionalización (Colombia)
@@ -106,5 +104,5 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirecciones de autenticación
-LOGIN_REDIRECT_URL = '/dashboard/ciudadano/'
+LOGIN_REDIRECT_URL = '/usuarios/redireccion/'
 LOGOUT_REDIRECT_URL = '/'

@@ -7,4 +7,7 @@ urlpatterns = [
     path('admin/usuarios/crear/', views.admin_crear_usuario, name='admin_crear_usuario'),
     path('admin/usuarios/<int:usuario_id>/editar/', views.admin_editar_usuario, name='admin_editar_usuario'),
     path('admin/usuarios/<int:usuario_id>/eliminar/', views.admin_eliminar_usuario, name='admin_eliminar_usuario'),
+
+    # Redirección dinámica después de login
+    path('redireccion/', views.redireccion_dashboard, name='redireccion_dashboard'),
 ]

@@ -84,3 +84,19 @@ def admin_eliminar_usuario(request, usuario_id):
     return render(request, 'usuarios/admin_usuario_confirm_delete.html', {
         'usuario': usuario
     })
+
+
+# -------------------
+# Redirección dinámica después de login
+# -------------------
+@login_required
+def redireccion_dashboard(request):
+    user = request.user
+    if user.rol == 'ciudadano':
+        return redirect('dashboard_ciudadano')
+    elif user.rol == 'tecnico':
+        return redirect('dashboard_tecnico')
+    elif user.rol == 'administrativo' or user.is_superuser:
+        return redirect('dashboard_admin')
+    else:
+        return redirect('index')  # fallback
