@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}{{ accion }} Usuario{% endblock %}
 {% block content %}
 <div class="container mt-4">
@@ -101,6 +102,18 @@
               {% endfor %}
             </div>
 
+            <!-- Dirección inicial (solo para ciudadanos) -->
+            <div class="mb-3" id="direccion-field" style="display:none;">
+              <label for="{{ form.direccion_inicial.id_for_label }}" class="form-label">
+                <i class="bi bi-geo-alt-fill"></i> Dirección inicial
+              </label>
+              {{ form.direccion_inicial }}
+              {% for error in form.direccion_inicial.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+              <div class="form-text">Este campo se usará si el rol es Ciudadano.</div>
+            </div>
+
             <!-- Password -->
             <div class="mb-3">
               <label for="{{ form.password.id_for_label }}" class="form-label">
@@ -113,18 +126,6 @@
               {% for error in form.password.errors %}
                 <div class="text-danger small">{{ error }}</div>
               {% endfor %}
-            </div>
-
-            <!-- Dirección inicial (solo para ciudadanos) -->
-            <div class="mb-3">
-              <label for="{{ form.direccion_inicial.id_for_label }}" class="form-label">
-                <i class="bi bi-geo-alt-fill"></i> Dirección inicial
-              </label>
-              {{ form.direccion_inicial }}
-              {% for error in form.direccion_inicial.errors %}
-                <div class="text-danger small">{{ error }}</div>
-              {% endfor %}
-              <div class="form-text">Este campo se usará si el rol es Ciudadano.</div>
             </div>
 
             <!-- Botones -->
@@ -142,4 +143,23 @@
     </div>
   </div>
 </div>
+
+<!-- Script para mostrar/ocultar dirección según rol -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const rolSelect = document.getElementById("id_rol");
+    const direccionField = document.getElementById("direccion-field");
+
+    function toggleDireccion() {
+      if (rolSelect.value === "ciudadano") {
+        direccionField.style.display = "block";
+      } else {
+        direccionField.style.display = "none";
+      }
+    }
+
+    rolSelect.addEventListener("change", toggleDireccion);
+    toggleDireccion(); // ejecutar al cargar
+  });
+</script>
 {% endblock %}

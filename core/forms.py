@@ -147,3 +147,16 @@ class UsuarioForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        rol = cleaned_data.get("rol")
+        direccion = cleaned_data.get("direccion_inicial")
+
+        # Validar que si el rol es ciudadano, la dirección sea obligatoria
+        if rol == Usuario.Rol.CIUDADANO and not direccion:
+            self.add_error("direccion_inicial", "La dirección es obligatoria para ciudadanos.")
+
+        return cleaned_data
+
