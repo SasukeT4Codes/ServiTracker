@@ -147,7 +147,7 @@ def admin_crear_usuario(request):
         return redirect('dashboard')
 
     if request.method == 'POST':
-        form = UsuarioForm(request.POST)
+        form = UsuarioForm(request.POST, crear=True)   # flag crear=True
         if form.is_valid():
             usuario = form.save()
             # Si es ciudadano, crear perfil y dirección inicial
@@ -161,7 +161,7 @@ def admin_crear_usuario(request):
                     )
             return redirect('admin_gestion_usuarios')
     else:
-        form = UsuarioForm()
+        form = UsuarioForm(crear=True)   # ← flag crear=True
 
     return render(request, 'dashboard/admin_usuario_form.html', {'form': form, 'accion': 'Crear'})
 
@@ -174,7 +174,7 @@ def admin_editar_usuario(request, usuario_id):
     usuario = get_object_or_404(Usuario, id=usuario_id)
 
     if request.method == 'POST':
-        form = UsuarioForm(request.POST, instance=usuario)
+        form = UsuarioForm(request.POST, instance=usuario)  # sin flag, edición
         if form.is_valid():
             usuario = form.save()
             # Si se cambia a ciudadano y no tiene perfil, crearlo
@@ -188,7 +188,7 @@ def admin_editar_usuario(request, usuario_id):
                     )
             return redirect('admin_gestion_usuarios')
     else:
-        form = UsuarioForm(instance=usuario)
+        form = UsuarioForm(instance=usuario)  # sin flag, edición
 
     return render(request, 'dashboard/admin_usuario_form.html', {'form': form, 'accion': 'Editar'})
 

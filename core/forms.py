@@ -132,6 +132,19 @@ class UsuarioForm(forms.ModelForm):
             'fecha_nacimiento': 'Fecha de nacimiento',
             'numero_cuenta': 'Número de cuenta de servicio',
         }
+        help_texts = {
+            'username': ''  # ← esto elimina el texto por defecto de Django
+        }
+
+    def __init__(self, *args, **kwargs):
+        crear = kwargs.pop('crear', False)  # ← flag que pasamos desde la vista
+        super().__init__(*args, **kwargs)
+        if crear:
+            self.fields['password'].required = True
+            self.fields['password'].help_text = "La contraseña debe tener al menos 8 caracteres."
+        else:
+            self.fields['password'].required = False
+            self.fields['password'].help_text = "Deja en blanco si no deseas cambiar la contraseña."
 
     def clean_password(self):
         pwd = self.cleaned_data.get('password')
@@ -147,8 +160,7 @@ class UsuarioForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-    
-    
+
     def clean(self):
         cleaned_data = super().clean()
         rol = cleaned_data.get("rol")
