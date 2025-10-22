@@ -12,34 +12,32 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Directorio base del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
+# Seguridad y depuración
 SECRET_KEY = 'django-insecure-c14&!7*t)t@j6%8-%&2&$jssn+0qq59d*x8ow80d1w37e!!b^u'
+DEBUG = True  # ⚠️ Cambiar a False en producción
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']  # Agregar dominio real en despliegue
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #cambiado de momento
-
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost'] #dominio real si se usa produccion
-
-
-# Application definition
-
+# Aplicaciones instaladas
 INSTALLED_APPS = [
+    # Django apps por defecto
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
+
+    # Apps del proyecto
+    'usuarios',
+    'pqr',
+    'dashboard',
+    'portal',
 ]
 
+# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -50,12 +48,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Configuración de URLs
 ROOT_URLCONF = 'global_config.urls'
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],  # carpeta global de templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,17 +63,16 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Aquí podrías agregar context processors propios si los necesitas
             ],
         },
     },
 ]
 
+# WSGI
 WSGI_APPLICATION = 'global_config.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
+# Base de datos (SQLite para desarrollo)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -81,54 +80,31 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
+# Validación de contraseñas
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# Usuario personalizado
 
-AUTH_USER_MODEL = 'core.Usuario' # Para personalizar el usuario
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+# Internacionalización (Colombia)
+LANGUAGE_CODE = 'es-co'
+TIME_ZONE = 'America/Bogota'
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
+# Archivos estáticos
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static'] #Le dice a django donde estan las img
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
+# Clave primaria por defecto
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# Redireccionar login exitoso
-
-LOGIN_REDIRECT_URL = '/dashboard/'
-LOGOUT_REDIRECT_URL = 'index'
+# Redirecciones de autenticación
+LOGIN_REDIRECT_URL = '/dashboard/ciudadano/'
+LOGOUT_REDIRECT_URL = '/'

@@ -24,7 +24,7 @@
         </div>
         {% endif %}
 
-        <!-- Dirección (antes era ubicacion) -->
+        <!-- Dirección -->
         <div class="mb-3">
           {{ form.direccion.label_tag }}
           {{ form.direccion }}
@@ -54,7 +54,7 @@
           {% if es_admin %}
             <a href="{% url 'admin_panel_quejas' %}" class="btn btn-secondary">Cancelar</a>
           {% else %}
-            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancelar</a>
+            <a href="{% url 'dashboard_ciudadano' %}" class="btn btn-secondary">Cancelar</a>
           {% endif %}
         </div>
       </form>

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Panel Administrativo de PQR{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+  <h2 class="mb-4">Panel de gestión de PQR</h2>
+
+  <div class="mb-3 d-flex justify-content-between align-items-center">
+    <div>
+      <a href="{% url 'admin_panel_quejas' %}" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-clockwise"></i> Refrescar
+      </a>
+    </div>
+    <div>
+      <!-- Botón para crear queja -->
+      <a href="{% url 'crear_queja' %}" class="btn btn-success btn-sm">
+        <i class="bi bi-plus-circle"></i> Crear nueva queja
+      </a>
+    </div>
+  </div>
+
+  <table class="table table-striped table-bordered shadow-sm">
+    <thead class="table-dark text-white">
+      <tr>
+        <th>ID</th>
+        <th>Ciudadano</th>
+        <th>Tipo de falla</th>
+        <th>Estado</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for q in quejas %}
+      <tr>
+        <td>{{ q.id }}</td>
+        <td>{{ q.ciudadano.usuario.username }}</td>
+        <td>{{ q.tipo_falla.nombre }}</td>
+        <td>{{ q.estado.nombre }}</td>
+        <td>{{ q.fecha_reporte|date:"d/m/Y H:i" }}</td>
+        <td class="d-flex gap-1">
+          <a href="{% url 'admin_asignar_tecnico' q.id %}" class="btn btn-sm btn-info" title="Asignar técnico">
+            <i class="bi bi-person-plus"></i>
+          </a>
+          <a href="{% url 'admin_editar_queja' q.id %}" class="btn btn-sm btn-warning" title="Editar queja">
+            <i class="bi bi-pencil-square"></i>
+          </a>
+          <a href="{% url 'cambiar_estado' q.id %}" class="btn btn-sm btn-secondary" title="Cambiar estado">
+            <i class="bi bi-arrow-repeat"></i>
+          </a>
+          <a href="{% url 'admin_eliminar_queja' q.id %}" class="btn btn-sm btn-danger" 
+             title="Eliminar" onclick="return confirm('¿Eliminar esta queja? Esta acción no se puede deshacer.');">
+            <i class="bi bi-trash"></i>
+          </a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center">
+          No hay PQR registradas.
+          <div class="mt-2">
+            <a href="{% url 'crear_queja' %}" class="btn btn-success btn-sm">
+              <i class="bi bi-plus-circle"></i> Crear la primera queja
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

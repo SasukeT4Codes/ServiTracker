@@ -24,8 +24,18 @@
         <li class="nav-item"><a class="nav-link" href="{% url 'nosotros' %}">Nosotros</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}">Contacto</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'servicios' %}">Servicios</a></li>
+        
         {% if user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
+          <!-- Dashboard dinámico según rol -->
+          {% if user.rol == 'ciudadano' %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'dashboard_ciudadano' %}">Dashboard</a></li>
+          {% elif user.rol == 'tecnico' %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'dashboard_tecnico' %}">Dashboard</a></li>
+          {% elif user.rol == 'administrativo' or user.is_superuser %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'dashboard_admin' %}">Dashboard</a></li>
+          {% endif %}
+
+          <!-- Logout -->
           <li class="nav-item">
             <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
               Salir
@@ -35,6 +45,7 @@
             </form>
           </li>
         {% else %}
+          <!-- Login -->
           <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Ingresar</a></li>
         {% endif %}
       </ul>

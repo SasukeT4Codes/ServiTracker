@@ -16,7 +16,9 @@
       <div class="card shadow-sm border-0">
         <div class="card-body">
           <h5 class="card-title text-warning">📌 PQR Abiertas</h5>
-          <p class="display-6">{{ quejas|length }}</p>
+          <p class="display-6">
+            {{ quejas|length }}
+          </p>
         </div>
       </div>
     </div>
@@ -24,7 +26,9 @@
       <div class="card shadow-sm border-0">
         <div class="card-body">
           <h5 class="card-title text-info">⏳ En Proceso</h5>
-          <p class="display-6">{{ quejas|dictsort:"estado.nombre"|length }}</p>
+          <p class="display-6">
+            {{ quejas|filter:"estado.nombre:En Proceso"|length }}
+          </p>
         </div>
       </div>
     </div>
@@ -33,7 +37,7 @@
         <div class="card-body">
           <h5 class="card-title text-success">✅ Cerradas</h5>
           <p class="display-6">
-            {{ quejas|dictsort:"estado.nombre"|length }}
+            {{ quejas|filter:"estado.nombre:Cerrada"|length }}
           </p>
         </div>
       </div>

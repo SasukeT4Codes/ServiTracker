@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Saludo{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+  <h1 class="mb-4">Formulario de saludo</h1>
+
+  <form method="get" action="{% url 'saludo' %}" class="card p-4 shadow-sm">
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="edad" class="form-label">Edad:</label>
+      <input type="number" id="edad" name="edad" class="form-control" min="0" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+  </form>
+
+  {% if has_data %}
+    <div class="alert alert-success mt-4 shadow-sm">
+      <p class="mb-0">👋 Hola, <strong>{{ nombre }}</strong>. Tienes <strong>{{ edad }}</strong> años.</p>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}
