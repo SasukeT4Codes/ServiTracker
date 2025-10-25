@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model, password_validation
 
 Usuario = get_user_model()
 
-
 # -------------------
 # Formulario de Usuario
 # -------------------
@@ -14,7 +13,7 @@ class UsuarioForm(forms.ModelForm):
         help_text="Deja en blanco si no deseas cambiar la contraseña."
     )
 
-    # Campo adicional para dirección inicial
+    # Campo adicional para dirección inicial (no está en el modelo Usuario)
     direccion_inicial = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'}),
@@ -48,11 +47,11 @@ class UsuarioForm(forms.ModelForm):
             'numero_cuenta': 'Número de cuenta de servicio',
         }
         help_texts = {
-            'username': ''  # ← esto elimina el texto por defecto de Django
+            'username': ''  # elimina el texto por defecto de Django
         }
 
     def __init__(self, *args, **kwargs):
-        crear = kwargs.pop('crear', False)  # ← flag que pasamos desde la vista
+        crear = kwargs.pop('crear', False)  # flag que pasamos desde la vista
         super().__init__(*args, **kwargs)
         if crear:
             self.fields['password'].required = True

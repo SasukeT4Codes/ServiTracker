@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Usuario
-from .forms import UsuarioForm  # asegúrate de tener este form definido
+from .models import Usuario, Ciudadano
+from .forms import UsuarioForm
+from pqr.models import Ubicacion
 
 # -------------------
 # Listar usuarios
@@ -27,13 +28,24 @@ def admin_crear_usuario(request):
         return redirect('dashboard_admin')
 
     if request.method == 'POST':
-        form = UsuarioForm(request.POST)
+        form = UsuarioForm(request.POST, crear=True)
         if form.is_valid():
-            form.save()
+            usuario = form.save()
+
+            # Si es ciudadano, crear perfil y dirección inicial
+            if usuario.rol == Usuario.Rol.CIUDADANO:
+                ciudadano = Ciudadano.objects.create(usuario=usuario)
+                direccion = form.cleaned_data.get('direccion_inicial')
+                if direccion:
+                    Ubicacion.objects.create(
+                        ciudadano=ciudadano,
+                        direccion=direccion
+                    )
+
             messages.success(request, "Usuario creado correctamente.")
             return redirect('admin_gestion_usuarios')
     else:
-        form = UsuarioForm()
+        form = UsuarioForm(crear=True)
 
     return render(request, 'usuarios/admin_usuario_form.html', {
         'form': form,
@@ -52,13 +64,26 @@ def admin_editar_usuario(request, usuario_id):
     usuario = get_object_or_404(Usuario, id=usuario_id)
 
     if request.method == 'POST':
-        form = UsuarioForm(request.POST, instance=usuario)
+        # importante: pasar crear=False para que el form sepa que es edición
+        form = UsuarioForm(request.POST, instance=usuario, crear=False)
         if form.is_valid():
-            form.save()
+            usuario = form.save()
+
+            # Si ahora es ciudadano y no tenía perfil, crearlo
+            if usuario.rol == Usuario.Rol.CIUDADANO:
+                ciudadano, created = Ciudadano.objects.get_or_create(usuario=usuario)
+                direccion = form.cleaned_data.get('direccion_inicial')
+                # Si se ingresó dirección y no tenía ninguna, crearla
+                if direccion and not ciudadano.direcciones.exists():
+                    Ubicacion.objects.create(
+                        ciudadano=ciudadano,
+                        direccion=direccion
+                    )
+
             messages.success(request, "Usuario actualizado correctamente.")
             return redirect('admin_gestion_usuarios')
     else:
-        form = UsuarioForm(instance=usuario)
+        form = UsuarioForm(instance=usuario, crear=False)
 
     return render(request, 'usuarios/admin_usuario_form.html', {
         'form': form,

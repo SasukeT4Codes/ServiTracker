@@ -1,7 +1,6 @@
 from django import forms
-from .models import Queja, ComentarioQueja
-from usuarios.models import Ciudadano
-
+from .models import Queja, ComentarioQueja, Ubicacion
+from usuarios.models import Ciudadano, Tecnico, Administrativo, Usuario
 
 # -------------------
 # Formularios de Queja
@@ -20,6 +19,14 @@ class QuejaForm(forms.ModelForm):
             'tipo_falla': 'Tipo de falla',
             'descripcion': 'Descripción',
         }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        # Si el usuario es ciudadano, limitar direcciones a las suyas
+        if user and hasattr(user, 'ciudadano'):
+            self.fields['direccion'].queryset = user.ciudadano.direcciones.all()
 
     def clean_descripcion(self):
         desc = self.cleaned_data.get('descripcion', '')
@@ -47,6 +54,7 @@ class QuejaFormAdmin(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Ordenar ciudadanos por username
         self.fields['ciudadano'].queryset = Ciudadano.objects.select_related('usuario').order_by('usuario__username')
 
 

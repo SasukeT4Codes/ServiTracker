@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-from .models import Queja, ComentarioQueja, Ubicacion
+from django import forms
+
+from .models import Queja, ComentarioQueja
 from .forms import QuejaForm, QuejaFormAdmin, ComentarioForm, CambiarEstadoForm
 from usuarios.models import Ciudadano
 
@@ -15,16 +17,17 @@ def crear_queja(request):
         return redirect('dashboard_ciudadano')
 
     if request.method == 'POST':
-        form = QuejaFormAdmin(request.POST) if es_admin else QuejaForm(request.POST)
+        # Pasamos el user al form para que filtre direcciones
+        form = QuejaFormAdmin(request.POST) if es_admin else QuejaForm(request.POST, user=request.user)
         if form.is_valid():
             queja = form.save(commit=False)
             if not es_admin:
                 queja.ciudadano = Ciudadano.objects.get(usuario=request.user)
-            queja.estado_id = 1
+            queja.estado_id = 1  # estado inicial
             queja.save()
             return redirect('admin_panel_quejas' if es_admin else 'dashboard_ciudadano')
     else:
-        form = QuejaFormAdmin() if es_admin else QuejaForm()
+        form = QuejaFormAdmin() if es_admin else QuejaForm(user=request.user)
 
     return render(request, 'pqr/crear_queja.html', {'form': form, 'es_admin': es_admin})
 
@@ -90,14 +93,13 @@ def agregar_comentario(request, queja_id):
 
 
 # -------------------
-# Panel administrativo de PQR
+# Formularios internos para admin
 # -------------------
-from django import forms
-
 class AsignarTecnicoForm(forms.ModelForm):
     class Meta:
         model = Queja
         fields = ['tecnico']
+
 
 class EditarQuejaForm(forms.ModelForm):
     class Meta:
@@ -118,6 +120,10 @@ class EditarQuejaForm(forms.ModelForm):
             'estado': 'Estado',
         }
 
+
+# -------------------
+# Panel administrativo de PQR
+# -------------------
 @login_required
 def admin_panel_quejas(request):
     if request.user.rol != 'administrativo' and not request.user.is_superuser:
